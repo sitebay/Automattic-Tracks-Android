@@ -32,7 +32,7 @@ public class TracksClient {
 
     public static final String LIB_VERSION = BuildConfig.VERSION_NAME;
     protected static final String DEFAULT_USER_AGENT = "Nosara Client for Android" + "/" + LIB_VERSION;
-    protected static final String NOSARA_REST_API_ENDPOINT_URL_V1_1 = "https://mytest.sitebay.org/api/";
+    protected static final String NOSARA_REST_API_ENDPOINT_URL_V1_1 = "https://mytest.sitebay.org/api/v1/mobile/";
     protected static final int DEFAULT_EVENTS_QUEUE_THRESHOLD = 9;
     protected static final int DEFAULT_EVENTS_QUEUE_MAX_SIZE = 10000;
     protected static final int DEFAULT_EVENTS_QUEUE_TIMER_MS = 30000;
