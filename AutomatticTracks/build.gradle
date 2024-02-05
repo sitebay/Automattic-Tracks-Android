@@ -1,42 +1,52 @@
-buildscript {
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31'
-    }
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.automattic.android.publish-to-s3'
 }
-
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
 
 repositories {
     google()
-    jcenter()
-}
-
-configurations {
-    ktlint
+    mavenCentral()
+    maven {
+        url "https://a8c-libs.s3.amazonaws.com/android"
+        content {
+            includeGroup "org.wordpress"
+        }
+    }
 }
 
 dependencies {
-    ktlint "com.pinterest:ktlint:0.40.0"
-    implementation 'io.sentry:sentry-android:1.7.16'
-    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation platform("io.sentry:sentry-bom:$sentryBomVersion")
+    implementation "io.sentry:sentry-android"
+    implementation "io.sentry:sentry-android-okhttp"
+    implementation "io.sentry:sentry-android-fragment"
+    implementation "androidx.annotation:annotation:$androidxAnnotationVersion"
+    implementation "com.squareup.okhttp3:okhttp:$squareupOkhttpVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.assertj:assertj-core:$assertjVersion"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
+    testImplementation "org.mockito:mockito-inline:$mockitoInlineVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion"
+
+    lintChecks "org.wordpress:lint:$wordpressLintVersion"
 }
 
-apply from: 'ktlint.gradle'
-
 android {
-    compileSdkVersion 30
+    namespace "com.automattic.android.tracks"
+
+    compileSdkVersion rootProject.compileSdkVersion
 
     defaultConfig {
-        versionName "1.2.1"
-        minSdkVersion 14
-        targetSdkVersion 30
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        buildConfigField "String", "SENTRY_TEST_PROJECT_DSN", project.properties.get("sentryTestProjectDSN")
+        buildConfigField "String", "VERSION_NAME", "\"2.1.0\""
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     compileOptions {
@@ -44,10 +54,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    lintOptions {
-        baseline file("lint-baseline.xml")
+    lint {
         warningsAsErrors true
-        warning 'GradleDependency'
+        lintConfig file("${project.rootDir}/config/lint/lint.xml")
+        baseline file("${project.rootDir}/config/lint/baseline.xml")
     }
 }
 
@@ -55,10 +65,13 @@ afterEvaluate {
     publishing {
         publications {
             maven(MavenPublication) {
-                artifactId 'Automattic-Tracks-Android'
-                description 'Android client for Nosara tracks (event tracking and analytics)'
                 from components.release
+
                 groupId 'com.automattic'
+                artifactId 'Automattic-Tracks-Android'
+                // version is set by 'publish-to-s3' plugin
+
+                description 'Android client for Nosara tracks (event tracking and analytics)'
                 pom {
                     licenses {
                         license {

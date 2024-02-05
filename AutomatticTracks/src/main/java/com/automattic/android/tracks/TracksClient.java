@@ -32,13 +32,14 @@ public class TracksClient {
 
     public static final String LIB_VERSION = BuildConfig.VERSION_NAME;
     protected static final String DEFAULT_USER_AGENT = "Nosara Client for Android" + "/" + LIB_VERSION;
-    protected static final String NOSARA_REST_API_ENDPOINT_URL_V1_1 = "https://mytest.sitebay.org/api/v1/mobile/";
+    protected static final String NOSARA_REST_API_ENDPOINT_URL_V1_1 = "https://my.sitebay.org/f/api/v1/mobile/";
+    //protected static final String NOSARA_REST_API_ENDPOINT_URL_V1_1 = "https://public-api.wordpress.com/rest/v1.1/";
     protected static final int DEFAULT_EVENTS_QUEUE_THRESHOLD = 9;
     protected static final int DEFAULT_EVENTS_QUEUE_MAX_SIZE = 10000;
     protected static final int DEFAULT_EVENTS_QUEUE_TIMER_MS = 30000;
     protected static final int DEFAULT_EVENT_MAX_AGE = 14 * 24 * 60 * 60 * 1000 ; // 14 days
 
-    public static enum NosaraUserType {ANON, WPCOM, SIMPLENOTE}
+    public static enum NosaraUserType {ANON, WPCOM, SIMPLENOTE, POCKETCASTS, DAYONE}
 
     /**
      * Socket timeout in milliseconds for rest requests
