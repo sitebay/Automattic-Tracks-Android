@@ -1,7 +1,8 @@
 plugins {
     id "com.android.library"
     id "org.jetbrains.kotlin.android"
-    id 'com.automattic.android.publish-to-s3'
+    //id 'com.automattic.android.publish-to-s3'
+    id 'maven-publish'
 }
 
 repositories {
@@ -56,19 +57,13 @@ afterEvaluate {
     publishing {
         publications {
             maven(MavenPublication) {
-                artifactId 'Automattic-Tracks-Android'
-                description 'Android client for Nosara tracks (event tracking and analytics)'
                 from components.release
-                groupId 'com.automattic'
-                pom {
-                    licenses {
-                        license {
-                            name = 'GNU General Public License v2.0'
-                            url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html'
-                        }
-                    }
-                }
+
+                groupId 'com.automattic.tracks'
+                artifactId 'experimentation'
+                // version is set by 'publish-to-s3' plugin
             }
         }
     }
 }
+
