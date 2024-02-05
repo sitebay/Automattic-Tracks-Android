@@ -1,5 +1,5 @@
 jdk:
-  - openjdk11
+  - openjdk17
 before_install:
   - cp gradle.properties-example gradle.properties
   - ./gradlew clean
