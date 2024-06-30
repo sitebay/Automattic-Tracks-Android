@@ -1,0 +1,73 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.automattic.android.publish-to-s3'
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url "https://a8c-libs.s3.amazonaws.com/android"
+        content {
+            includeGroup "org.wordpress"
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.annotation:annotation:$androidxAnnotationVersion"
+    implementation "com.squareup.okhttp3:okhttp:$squareupOkhttpVersion"
+
+    lintChecks "org.wordpress:lint:$wordpressLintVersion"
+}
+
+android {
+    namespace "com.automattic.android.tracks"
+
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lint {
+        warningsAsErrors true
+        lintConfig file("${project.rootDir}/config/lint/lint.xml")
+        baseline file("${project.rootDir}/config/lint/baseline.xml")
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.release
+
+                groupId 'com.automattic'
+                artifactId 'Automattic-Tracks-Android'
+                // version is set by 'publish-to-s3' plugin
+
+                description 'Android client for Nosara tracks (event tracking and analytics)'
+                pom {
+                    licenses {
+                        license {
+                            name = 'GNU General Public License v2.0'
+                            url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,51 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+repositories {
+    google()
+}
+
+android {
+    namespace "com.example.sampletracksapp"
+
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.example.sampletracksapp"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        buildConfigField "String", "SENTRY_TEST_PROJECT_DSN", project.properties.get("sentryTestProjectDSN")
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        buildConfig true
+        viewBinding = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lint {
+        warningsAsErrors true
+        lintConfig file("${project.rootDir}/config/lint/lint.xml")
+        disable 'HardcodedText'
+    }
+}
+
+dependencies {
+    implementation project(":AutomatticTracks")
+    implementation project(":crashlogging")
+    implementation "androidx.core:core-ktx:$androidxCoreVersion"
+    implementation "androidx.appcompat:appcompat:$androidxAppcompatVersion"
+    implementation "com.google.android.material:material:$googleMaterialVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
+
+    // For performance showcase
+    implementation "com.squareup.okhttp3:okhttp:$squareupOkhttpVersion"
+}

@@ -1,0 +1,68 @@
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
+    id 'com.automattic.android.publish-to-s3'
+}
+
+repositories {
+    google()
+    maven {
+        url "https://a8c-libs.s3.amazonaws.com/android"
+        content {
+            includeGroup "org.wordpress"
+            includeGroup "org.wordpress.fluxc"
+            includeGroup "org.wordpress.wellsql"
+        }
+    }
+}
+
+android {
+    namespace "com.automattic.android.experimentation"
+
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lint {
+        warningsAsErrors true
+        lintConfig file("${project.rootDir}/config/lint/lint.xml")
+    }
+}
+
+dependencies {
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesExperimentationVersion"
+
+    //FluxC
+    implementation "org.wordpress:fluxc:$wordPressFluxCVersion"
+
+    //WordPress utils
+    implementation "org.wordpress:utils:$wordPressUtilsVersion"
+
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesExperimentationVersion"
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.assertj:assertj-core:$assertjVersion"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
+    testImplementation "org.mockito:mockito-inline:$mockitoInlineVersion"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.release
+
+                groupId 'com.automattic.tracks'
+                artifactId 'experimentation'
+                // version is set by 'publish-to-s3' plugin
+            }
+        }
+    }
+}
+
