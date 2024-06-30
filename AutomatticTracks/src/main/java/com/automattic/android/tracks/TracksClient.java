@@ -462,6 +462,7 @@ public class TracksClient {
         }
     }
 
+    @Deprecated
     public void trackAliasUser(String user, String anonUser, NosaraUserType userType) {
         JSONObject customProps = new JSONObject();
         try {
@@ -478,6 +479,7 @@ public class TracksClient {
      Used by old version of the WP-Android App
      @deprecated since version 1.1
      */
+    @Deprecated
     public void trackAliasUser(String user, String anonUser) {
         trackAliasUser(user, anonUser, TracksClient.NosaraUserType.WPCOM);
     }
