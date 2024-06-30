@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     // For 'tracks' module
-    implementation 'com.automattic:Automattic-Tracks-Android:{version}'
+    implementation 'com.sitebay:Automattic-Tracks-Android:{version}'
 
     // For 'experimentation' module
     implementation 'com.automattic.tracks:experimentation:{version}'
