@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
     // id 'com.automattic.android.publish-to-s3'
 }
 
@@ -8,7 +9,7 @@ repositories {
     google()
     mavenCentral()
     maven {
-        // url "https://a8c-libs.s3.amazonaws.com/android"
+        url "https://a8c-libs.s3.amazonaws.com/android"
         content {
             includeGroup "org.wordpress"
         }
