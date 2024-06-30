@@ -41,5 +41,4 @@ steps:
     command: |
       cp gradle.properties-example gradle.properties
       ./gradlew \
-          :{{matrix}}:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
           :{{matrix}}:publish
